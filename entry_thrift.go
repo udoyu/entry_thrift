@@ -30,7 +30,7 @@ func (this *EntryClient) Init(st *thriftst.ThriftSt) {
 		st.TProtocolFactory())
 	this.client = client
 	//        c.handlers = make(map[string]EntryInterfaceHandler)
-	this.handlers = make(map[string]func(*controller.Controller))
+	this.handlers = make(map[string]func(*controller.Controller)int)
 }
 
 func (this *EntryClient) Handler(ctl *controller.Controller) bool {
