@@ -42,7 +42,7 @@ func (this *EntryClient) Handler(ctl *controller.Controller) bool {
 	return ok
 }
 
-func (this *EntryClient) AddHandler(path string, h func(*controller.Controller)) {
+func (this *EntryClient) AddHandler(path string, h func(*controller.Controller)int) {
 	this.handlers[path] = h
 }
 
