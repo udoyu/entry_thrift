@@ -20,7 +20,7 @@ func Atoi(s string) int {
 
 type EntryClient struct {
 	client   *EntryThriftSvrClient
-	handlers map[string]func(*controller.Controller)
+	handlers map[string]func(*controller.Controller)int
 	//handlers map[string]EntryInterfaceHandler
 	//	handlers map[string]func(*controller.Controller)
 }
