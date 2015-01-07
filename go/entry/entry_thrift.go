@@ -1,8 +1,8 @@
-package entry_thrift
+package entry
 
 import (
 	"code.google.com/p/goprotobuf/proto"
-	. "github.com/xiying/entry_thrift/gen-go/entry"
+	. "github.com/xiying/entry_thrift/go/entry/gen-go/entry"
 	"github.com/xiying/xytool/beego/controller"
 	"github.com/xiying/xytool/thrift/thriftst"
 	"strconv"
