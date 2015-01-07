@@ -3,8 +3,8 @@ package entry_thrift
 import (
 	"code.google.com/p/goprotobuf/proto"
 	. "github.com/xiying/entry_thrift/gen-go/entry"
-	"github.com/xiying/fish/beego/controller"
-	"github.com/xiying/fish/thrift/thriftst"
+	"github.com/xiying/xytool/beego/controller"
+	"github.com/xiying/xytool/thrift/thriftst"
 	"strconv"
 )
 
@@ -25,10 +25,6 @@ type EntryClient struct {
 	//	handlers map[string]func(*controller.Controller)
 }
 
-type EntryInterfaceHandler interface {
-	Handler(*EntryClient, *controller.Controller)
-}
-
 func (this *EntryClient) Init(st *thriftst.ThriftSt) {
 	client := NewEntryThriftSvrClientFactory(st.TTransport(),
 		st.TProtocolFactory())
@@ -38,7 +34,7 @@ func (this *EntryClient) Init(st *thriftst.ThriftSt) {
 }
 
 func (this *EntryClient) Handler(ctl *controller.Controller) bool {
-	f, ok := this.handlers[ctl.Ctx.Request.URL.Path]
+	f, ok := this.handlers[ctl.Path()]
 	if ok {
 		f(ctl)
 	}
