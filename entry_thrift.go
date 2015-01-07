@@ -38,6 +38,7 @@ func (this *EntryClient) Handler(ctl *controller.Controller) bool {
 	if ok {
 		f(ctl)
 	}
+        this.DefaultHandler(ctl)
 	return ok
 }
 
@@ -47,6 +48,9 @@ func (this *EntryClient) AddHandler(path string, h func(*controller.Controller))
 
 func (this *EntryClient) DelHandler(path string) {
 	delete(this.handlers, path)
+}
+
+func (this *EntryClient) DefaultHandler(ctl *controller.Controller) {
 }
 
 func (this *EntryClient) Send(main_cmd, sub_cmd int32,
