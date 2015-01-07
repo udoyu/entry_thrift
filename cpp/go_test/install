@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+if [ ! -f install ]; then
+echo 'install must be run within its container folder' 1>&2
+exit 1
+fi
+
+
+CURDIR=`pwd`
+OLDGOPATH="$GOPATH"
+export GOPATH="$CURDIR:$OLDGOPATH"
+
+#OLDGOROOT="$GOROOT"
+#export GOROOT="$CURDIR"
+
+gofmt -w src
+#cd $HTTPSO_PATH/src/http;make clean;make;cd -
+#cp $HTTPSO_PATH/src/http/*.so ./lib
+#go install demo
+go install client
+#go install sessdemo
+
+export GOPATH="$OLDGOPATH"
+#export GOROOT="$OLDGOROOT"
+
+
+echo 'finished'
