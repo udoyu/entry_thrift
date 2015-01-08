@@ -19,6 +19,7 @@ func Atoi(s string) int {
 }
 
 type EntryClient struct {
+        st *thriftst.ThriftSt
 	client   *EntryThriftSvrClient
 	handlers map[string]func(*controller.Controller)int
 	//handlers map[string]EntryInterfaceHandler
@@ -28,6 +29,7 @@ type EntryClient struct {
 func (this *EntryClient) Init(st *thriftst.ThriftSt) {
 	client := NewEntryThriftSvrClientFactory(st.TTransport(),
 		st.TProtocolFactory())
+        this.st = st
 	this.client = client
 	//        c.handlers = make(map[string]EntryInterfaceHandler)
 	this.handlers = make(map[string]func(*controller.Controller)int)
@@ -68,6 +70,8 @@ func (this *EntryClient) Send(main_cmd, sub_cmd int32,
 	}
 	r, e := this.client.Send(pkg)
 	if e != nil {
+                this.st.Close()
+                this.st.Open()
 		return e
 	}
 	err = proto.Unmarshal(r.Data, resp)
