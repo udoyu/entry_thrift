@@ -59,12 +59,10 @@ func (this *EntryClient) Send(main_cmd, sub_cmd int32,
 	req, resp proto.Message) error {
 	var err error
 	pkg := NewThriftPkg()
-	ret := int32(0)
-	pkg.Ret = &ret
-	pkg.MainCmd = &main_cmd
-	pkg.SubCmd = &sub_cmd
+	pkg.MainCmd = main_cmd
+	pkg.SubCmd = sub_cmd
 
-	pkg.Data, err = proto.Marshal(req)
+	pkg.BufData, err = proto.Marshal(req)
 	if err != nil {
 		return err
 	}
@@ -74,14 +72,11 @@ L:
 	if e != nil {
                 this.st.Close()
                 this.st.Open()
-<<<<<<< HEAD
                 if i++;i>3 {
 		    return e
                 }
                 goto L
-=======
 		return e
->>>>>>> b5cced89b9548547fb8683c95cfaf5fc857527bf
 	}
 	err = proto.Unmarshal(r.BufData, resp)
 	if err != nil {
