@@ -14,8 +14,9 @@ public:
     {
         cout<<"main_cmd="<<req_.main_cmd<<endl;
         resp_.main_cmd = 100;
-        resp_.data = string("\0 12345\05678", 12);
-        cout<<"resp.data.len="<<resp_.data.length()<<endl;
+        resp_.buf_data = string("\0 12345\05678", 12);
+        resp_.str_data = string("\0 12345\05678", 12);
+        cout<<"resp.buf_data.len="<<resp_.buf_data.length()<<endl;
         return 0;
     }
 private:

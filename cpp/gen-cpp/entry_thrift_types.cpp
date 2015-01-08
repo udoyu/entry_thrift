@@ -20,7 +20,6 @@ ThriftPkg::~ThriftPkg() throw() {
 
 void ThriftPkg::__set_ret(const int32_t val) {
   this->ret = val;
-__isset.ret = true;
 }
 
 void ThriftPkg::__set_main_cmd(const int32_t val) {
@@ -31,13 +30,16 @@ void ThriftPkg::__set_sub_cmd(const int32_t val) {
   this->sub_cmd = val;
 }
 
-void ThriftPkg::__set_data(const std::string& val) {
-  this->data = val;
-__isset.data = true;
+void ThriftPkg::__set_buf_data(const std::string& val) {
+  this->buf_data = val;
 }
 
-const char* ThriftPkg::ascii_fingerprint = "71DA0ECCE646530E6545B34A6E55E5F9";
-const uint8_t ThriftPkg::binary_fingerprint[16] = {0x71,0xDA,0x0E,0xCC,0xE6,0x46,0x53,0x0E,0x65,0x45,0xB3,0x4A,0x6E,0x55,0xE5,0xF9};
+void ThriftPkg::__set_str_data(const std::string& val) {
+  this->str_data = val;
+}
+
+const char* ThriftPkg::ascii_fingerprint = "DC4A7944CA87068C3A6D1BCBB8633569";
+const uint8_t ThriftPkg::binary_fingerprint[16] = {0xDC,0x4A,0x79,0x44,0xCA,0x87,0x06,0x8C,0x3A,0x6D,0x1B,0xCB,0xB8,0x63,0x35,0x69};
 
 uint32_t ThriftPkg::read(::apache::thrift::protocol::TProtocol* iprot) {
 
@@ -50,8 +52,6 @@ uint32_t ThriftPkg::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_main_cmd = false;
-  bool isset_sub_cmd = false;
 
   while (true)
   {
@@ -72,7 +72,7 @@ uint32_t ThriftPkg::read(::apache::thrift::protocol::TProtocol* iprot) {
       case 2:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           xfer += iprot->readI32(this->main_cmd);
-          isset_main_cmd = true;
+          this->__isset.main_cmd = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -80,15 +80,23 @@ uint32_t ThriftPkg::read(::apache::thrift::protocol::TProtocol* iprot) {
       case 3:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           xfer += iprot->readI32(this->sub_cmd);
-          isset_sub_cmd = true;
+          this->__isset.sub_cmd = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 4:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readBinary(this->data);
-          this->__isset.data = true;
+          xfer += iprot->readBinary(this->buf_data);
+          this->__isset.buf_data = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->str_data);
+          this->__isset.str_data = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -102,10 +110,6 @@ uint32_t ThriftPkg::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_main_cmd)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_sub_cmd)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   return xfer;
 }
 
@@ -114,11 +118,10 @@ uint32_t ThriftPkg::write(::apache::thrift::protocol::TProtocol* oprot) const {
   oprot->incrementRecursionDepth();
   xfer += oprot->writeStructBegin("ThriftPkg");
 
-  if (this->__isset.ret) {
-    xfer += oprot->writeFieldBegin("ret", ::apache::thrift::protocol::T_I32, 1);
-    xfer += oprot->writeI32(this->ret);
-    xfer += oprot->writeFieldEnd();
-  }
+  xfer += oprot->writeFieldBegin("ret", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->ret);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldBegin("main_cmd", ::apache::thrift::protocol::T_I32, 2);
   xfer += oprot->writeI32(this->main_cmd);
   xfer += oprot->writeFieldEnd();
@@ -127,11 +130,14 @@ uint32_t ThriftPkg::write(::apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeI32(this->sub_cmd);
   xfer += oprot->writeFieldEnd();
 
-  if (this->__isset.data) {
-    xfer += oprot->writeFieldBegin("data", ::apache::thrift::protocol::T_STRING, 4);
-    xfer += oprot->writeBinary(this->data);
-    xfer += oprot->writeFieldEnd();
-  }
+  xfer += oprot->writeFieldBegin("buf_data", ::apache::thrift::protocol::T_STRING, 4);
+  xfer += oprot->writeBinary(this->buf_data);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("str_data", ::apache::thrift::protocol::T_STRING, 5);
+  xfer += oprot->writeString(this->str_data);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   oprot->decrementRecursionDepth();
@@ -143,7 +149,8 @@ void swap(ThriftPkg &a, ThriftPkg &b) {
   swap(a.ret, b.ret);
   swap(a.main_cmd, b.main_cmd);
   swap(a.sub_cmd, b.sub_cmd);
-  swap(a.data, b.data);
+  swap(a.buf_data, b.buf_data);
+  swap(a.str_data, b.str_data);
   swap(a.__isset, b.__isset);
 }
 
@@ -151,24 +158,27 @@ ThriftPkg::ThriftPkg(const ThriftPkg& other0) {
   ret = other0.ret;
   main_cmd = other0.main_cmd;
   sub_cmd = other0.sub_cmd;
-  data = other0.data;
+  buf_data = other0.buf_data;
+  str_data = other0.str_data;
   __isset = other0.__isset;
 }
 ThriftPkg& ThriftPkg::operator=(const ThriftPkg& other1) {
   ret = other1.ret;
   main_cmd = other1.main_cmd;
   sub_cmd = other1.sub_cmd;
-  data = other1.data;
+  buf_data = other1.buf_data;
+  str_data = other1.str_data;
   __isset = other1.__isset;
   return *this;
 }
 std::ostream& operator<<(std::ostream& out, const ThriftPkg& obj) {
   using apache::thrift::to_string;
   out << "ThriftPkg(";
-  out << "ret="; (obj.__isset.ret ? (out << to_string(obj.ret)) : (out << "<null>"));
+  out << "ret=" << to_string(obj.ret);
   out << ", " << "main_cmd=" << to_string(obj.main_cmd);
   out << ", " << "sub_cmd=" << to_string(obj.sub_cmd);
-  out << ", " << "data="; (obj.__isset.data ? (out << to_string(obj.data)) : (out << "<null>"));
+  out << ", " << "buf_data=" << to_string(obj.buf_data);
+  out << ", " << "str_data=" << to_string(obj.str_data);
   out << ")";
   return out;
 }

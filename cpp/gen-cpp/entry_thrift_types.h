@@ -22,27 +22,31 @@ namespace entry {
 class ThriftPkg;
 
 typedef struct _ThriftPkg__isset {
-  _ThriftPkg__isset() : ret(false), data(false) {}
+  _ThriftPkg__isset() : ret(false), main_cmd(false), sub_cmd(false), buf_data(false), str_data(false) {}
   bool ret :1;
-  bool data :1;
+  bool main_cmd :1;
+  bool sub_cmd :1;
+  bool buf_data :1;
+  bool str_data :1;
 } _ThriftPkg__isset;
 
 class ThriftPkg {
  public:
 
-  static const char* ascii_fingerprint; // = "71DA0ECCE646530E6545B34A6E55E5F9";
-  static const uint8_t binary_fingerprint[16]; // = {0x71,0xDA,0x0E,0xCC,0xE6,0x46,0x53,0x0E,0x65,0x45,0xB3,0x4A,0x6E,0x55,0xE5,0xF9};
+  static const char* ascii_fingerprint; // = "DC4A7944CA87068C3A6D1BCBB8633569";
+  static const uint8_t binary_fingerprint[16]; // = {0xDC,0x4A,0x79,0x44,0xCA,0x87,0x06,0x8C,0x3A,0x6D,0x1B,0xCB,0xB8,0x63,0x35,0x69};
 
   ThriftPkg(const ThriftPkg&);
   ThriftPkg& operator=(const ThriftPkg&);
-  ThriftPkg() : ret(0), main_cmd(0), sub_cmd(0), data() {
+  ThriftPkg() : ret(0), main_cmd(0), sub_cmd(0), buf_data(), str_data() {
   }
 
   virtual ~ThriftPkg() throw();
   int32_t ret;
   int32_t main_cmd;
   int32_t sub_cmd;
-  std::string data;
+  std::string buf_data;
+  std::string str_data;
 
   _ThriftPkg__isset __isset;
 
@@ -52,21 +56,21 @@ class ThriftPkg {
 
   void __set_sub_cmd(const int32_t val);
 
-  void __set_data(const std::string& val);
+  void __set_buf_data(const std::string& val);
+
+  void __set_str_data(const std::string& val);
 
   bool operator == (const ThriftPkg & rhs) const
   {
-    if (__isset.ret != rhs.__isset.ret)
-      return false;
-    else if (__isset.ret && !(ret == rhs.ret))
+    if (!(ret == rhs.ret))
       return false;
     if (!(main_cmd == rhs.main_cmd))
       return false;
     if (!(sub_cmd == rhs.sub_cmd))
       return false;
-    if (__isset.data != rhs.__isset.data)
+    if (!(buf_data == rhs.buf_data))
       return false;
-    else if (__isset.data && !(data == rhs.data))
+    if (!(str_data == rhs.str_data))
       return false;
     return true;
   }

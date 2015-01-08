@@ -44,7 +44,6 @@ public:
         _return.__set_ret(ret);
         _return.__set_main_cmd(req.main_cmd);
         _return.__set_sub_cmd(req.sub_cmd);
-        _return.__isset.data = true;
     }
 private:
     EntryThriftCmdHandler* handler_;

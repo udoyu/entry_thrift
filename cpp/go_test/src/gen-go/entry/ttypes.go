@@ -17,64 +17,36 @@ var _ = bytes.Equal
 var GoUnusedProtection__ int
 
 type ThriftPkg struct {
-	Ret     *int32 `thrift:"ret,1" json:"ret"`
-	MainCmd *int32 `thrift:"main_cmd,2" json:"main_cmd"`
-	SubCmd  *int32 `thrift:"sub_cmd,3" json:"sub_cmd"`
-	Data    []byte `thrift:"data,4" json:"data"`
+	Ret     int32  `thrift:"ret,1" json:"ret"`
+	MainCmd int32  `thrift:"main_cmd,2" json:"main_cmd"`
+	SubCmd  int32  `thrift:"sub_cmd,3" json:"sub_cmd"`
+	BufData []byte `thrift:"buf_data,4" json:"buf_data"`
+	StrData string `thrift:"str_data,5" json:"str_data"`
 }
 
 func NewThriftPkg() *ThriftPkg {
 	return &ThriftPkg{}
 }
 
-var ThriftPkg_Ret_DEFAULT int32
-
 func (p *ThriftPkg) GetRet() int32 {
-	if !p.IsSetRet() {
-		return ThriftPkg_Ret_DEFAULT
-	}
-	return *p.Ret
+	return p.Ret
 }
-
-var ThriftPkg_MainCmd_DEFAULT int32
 
 func (p *ThriftPkg) GetMainCmd() int32 {
-	if !p.IsSetMainCmd() {
-		return ThriftPkg_MainCmd_DEFAULT
-	}
-	return *p.MainCmd
+	return p.MainCmd
 }
-
-var ThriftPkg_SubCmd_DEFAULT int32
 
 func (p *ThriftPkg) GetSubCmd() int32 {
-	if !p.IsSetSubCmd() {
-		return ThriftPkg_SubCmd_DEFAULT
-	}
-	return *p.SubCmd
+	return p.SubCmd
 }
 
-var ThriftPkg_Data_DEFAULT []byte
-
-func (p *ThriftPkg) GetData() []byte {
-	return p.Data
-}
-func (p *ThriftPkg) IsSetRet() bool {
-	return p.Ret != nil
+func (p *ThriftPkg) GetBufData() []byte {
+	return p.BufData
 }
 
-func (p *ThriftPkg) IsSetMainCmd() bool {
-	return p.MainCmd != nil
+func (p *ThriftPkg) GetStrData() string {
+	return p.StrData
 }
-
-func (p *ThriftPkg) IsSetSubCmd() bool {
-	return p.SubCmd != nil
-}
-
-func (p *ThriftPkg) IsSetData() bool {
-	return p.Data != nil
-}
-
 func (p *ThriftPkg) Read(iprot thrift.TProtocol) error {
 	if _, err := iprot.ReadStructBegin(); err != nil {
 		return fmt.Errorf("%T read error: %s", p, err)
@@ -104,6 +76,10 @@ func (p *ThriftPkg) Read(iprot thrift.TProtocol) error {
 			if err := p.ReadField4(iprot); err != nil {
 				return err
 			}
+		case 5:
+			if err := p.ReadField5(iprot); err != nil {
+				return err
+			}
 		default:
 			if err := iprot.Skip(fieldTypeId); err != nil {
 				return err
@@ -123,7 +99,7 @@ func (p *ThriftPkg) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return fmt.Errorf("error reading field 1: %s", err)
 	} else {
-		p.Ret = &v
+		p.Ret = v
 	}
 	return nil
 }
@@ -132,7 +108,7 @@ func (p *ThriftPkg) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return fmt.Errorf("error reading field 2: %s", err)
 	} else {
-		p.MainCmd = &v
+		p.MainCmd = v
 	}
 	return nil
 }
@@ -141,7 +117,7 @@ func (p *ThriftPkg) ReadField3(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return fmt.Errorf("error reading field 3: %s", err)
 	} else {
-		p.SubCmd = &v
+		p.SubCmd = v
 	}
 	return nil
 }
@@ -150,7 +126,16 @@ func (p *ThriftPkg) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadBinary(); err != nil {
 		return fmt.Errorf("error reading field 4: %s", err)
 	} else {
-		p.Data = v
+		p.BufData = v
+	}
+	return nil
+}
+
+func (p *ThriftPkg) ReadField5(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return fmt.Errorf("error reading field 5: %s", err)
+	} else {
+		p.StrData = v
 	}
 	return nil
 }
@@ -171,6 +156,9 @@ func (p *ThriftPkg) Write(oprot thrift.TProtocol) error {
 	if err := p.writeField4(oprot); err != nil {
 		return err
 	}
+	if err := p.writeField5(oprot); err != nil {
+		return err
+	}
 	if err := oprot.WriteFieldStop(); err != nil {
 		return fmt.Errorf("write field stop error: %s", err)
 	}
@@ -181,61 +169,66 @@ func (p *ThriftPkg) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *ThriftPkg) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.IsSetRet() {
-		if err := oprot.WriteFieldBegin("ret", thrift.I32, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:ret: %s", p, err)
-		}
-		if err := oprot.WriteI32(int32(*p.Ret)); err != nil {
-			return fmt.Errorf("%T.ret (1) field write error: %s", p, err)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:ret: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("ret", thrift.I32, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:ret: %s", p, err)
+	}
+	if err := oprot.WriteI32(int32(p.Ret)); err != nil {
+		return fmt.Errorf("%T.ret (1) field write error: %s", p, err)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:ret: %s", p, err)
 	}
 	return err
 }
 
 func (p *ThriftPkg) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetMainCmd() {
-		if err := oprot.WriteFieldBegin("main_cmd", thrift.I32, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:main_cmd: %s", p, err)
-		}
-		if err := oprot.WriteI32(int32(*p.MainCmd)); err != nil {
-			return fmt.Errorf("%T.main_cmd (2) field write error: %s", p, err)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:main_cmd: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("main_cmd", thrift.I32, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:main_cmd: %s", p, err)
+	}
+	if err := oprot.WriteI32(int32(p.MainCmd)); err != nil {
+		return fmt.Errorf("%T.main_cmd (2) field write error: %s", p, err)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:main_cmd: %s", p, err)
 	}
 	return err
 }
 
 func (p *ThriftPkg) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSubCmd() {
-		if err := oprot.WriteFieldBegin("sub_cmd", thrift.I32, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:sub_cmd: %s", p, err)
-		}
-		if err := oprot.WriteI32(int32(*p.SubCmd)); err != nil {
-			return fmt.Errorf("%T.sub_cmd (3) field write error: %s", p, err)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:sub_cmd: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("sub_cmd", thrift.I32, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:sub_cmd: %s", p, err)
+	}
+	if err := oprot.WriteI32(int32(p.SubCmd)); err != nil {
+		return fmt.Errorf("%T.sub_cmd (3) field write error: %s", p, err)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:sub_cmd: %s", p, err)
 	}
 	return err
 }
 
 func (p *ThriftPkg) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetData() {
-		if err := oprot.WriteFieldBegin("data", thrift.STRING, 4); err != nil {
-			return fmt.Errorf("%T write field begin error 4:data: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Data); err != nil {
-			return fmt.Errorf("%T.data (4) field write error: %s", p, err)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 4:data: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("buf_data", thrift.STRING, 4); err != nil {
+		return fmt.Errorf("%T write field begin error 4:buf_data: %s", p, err)
+	}
+	if err := oprot.WriteBinary(p.BufData); err != nil {
+		return fmt.Errorf("%T.buf_data (4) field write error: %s", p, err)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 4:buf_data: %s", p, err)
+	}
+	return err
+}
+
+func (p *ThriftPkg) writeField5(oprot thrift.TProtocol) (err error) {
+	if err := oprot.WriteFieldBegin("str_data", thrift.STRING, 5); err != nil {
+		return fmt.Errorf("%T write field begin error 5:str_data: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.StrData)); err != nil {
+		return fmt.Errorf("%T.str_data (5) field write error: %s", p, err)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 5:str_data: %s", p, err)
 	}
 	return err
 }

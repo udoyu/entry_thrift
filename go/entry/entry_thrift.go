@@ -1,7 +1,6 @@
 package entry
 
 import (
-        "fmt"
 	"code.google.com/p/goprotobuf/proto"
 	. "github.com/xiying/entry_thrift/go/entry/gen-go/entry"
 	"github.com/xiying/xytool/beego/controller"
@@ -80,10 +79,8 @@ L:
                 }
                 goto L
 	}
-        fmt.Println("datalen=", len(r.Data))
-	err = proto.Unmarshal(r.Data, resp)
+	err = proto.Unmarshal(r.BufData, resp)
 	if err != nil {
-                fmt.Printf("resp=%v\n", resp)
 		return err
 	}
 	return nil

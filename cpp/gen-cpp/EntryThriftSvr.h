@@ -58,8 +58,8 @@ typedef struct _EntryThriftSvr_Send_args__isset {
 class EntryThriftSvr_Send_args {
  public:
 
-  static const char* ascii_fingerprint; // = "9FC9515319AF6FB2A9ECFC398BF973BD";
-  static const uint8_t binary_fingerprint[16]; // = {0x9F,0xC9,0x51,0x53,0x19,0xAF,0x6F,0xB2,0xA9,0xEC,0xFC,0x39,0x8B,0xF9,0x73,0xBD};
+  static const char* ascii_fingerprint; // = "C6EE47C8C306A4B410483293BC21A515";
+  static const uint8_t binary_fingerprint[16]; // = {0xC6,0xEE,0x47,0xC8,0xC3,0x06,0xA4,0xB4,0x10,0x48,0x32,0x93,0xBC,0x21,0xA5,0x15};
 
   EntryThriftSvr_Send_args(const EntryThriftSvr_Send_args&);
   EntryThriftSvr_Send_args& operator=(const EntryThriftSvr_Send_args&);
@@ -95,8 +95,8 @@ class EntryThriftSvr_Send_args {
 class EntryThriftSvr_Send_pargs {
  public:
 
-  static const char* ascii_fingerprint; // = "9FC9515319AF6FB2A9ECFC398BF973BD";
-  static const uint8_t binary_fingerprint[16]; // = {0x9F,0xC9,0x51,0x53,0x19,0xAF,0x6F,0xB2,0xA9,0xEC,0xFC,0x39,0x8B,0xF9,0x73,0xBD};
+  static const char* ascii_fingerprint; // = "C6EE47C8C306A4B410483293BC21A515";
+  static const uint8_t binary_fingerprint[16]; // = {0xC6,0xEE,0x47,0xC8,0xC3,0x06,0xA4,0xB4,0x10,0x48,0x32,0x93,0xBC,0x21,0xA5,0x15};
 
 
   virtual ~EntryThriftSvr_Send_pargs() throw();
@@ -115,8 +115,8 @@ typedef struct _EntryThriftSvr_Send_result__isset {
 class EntryThriftSvr_Send_result {
  public:
 
-  static const char* ascii_fingerprint; // = "4509E8A21AAF2C71352EF4AA01CF52FC";
-  static const uint8_t binary_fingerprint[16]; // = {0x45,0x09,0xE8,0xA2,0x1A,0xAF,0x2C,0x71,0x35,0x2E,0xF4,0xAA,0x01,0xCF,0x52,0xFC};
+  static const char* ascii_fingerprint; // = "E7E5E9F15B0C0860554F5F73FA12DBC1";
+  static const uint8_t binary_fingerprint[16]; // = {0xE7,0xE5,0xE9,0xF1,0x5B,0x0C,0x08,0x60,0x55,0x4F,0x5F,0x73,0xFA,0x12,0xDB,0xC1};
 
   EntryThriftSvr_Send_result(const EntryThriftSvr_Send_result&);
   EntryThriftSvr_Send_result& operator=(const EntryThriftSvr_Send_result&);
@@ -156,8 +156,8 @@ typedef struct _EntryThriftSvr_Send_presult__isset {
 class EntryThriftSvr_Send_presult {
  public:
 
-  static const char* ascii_fingerprint; // = "4509E8A21AAF2C71352EF4AA01CF52FC";
-  static const uint8_t binary_fingerprint[16]; // = {0x45,0x09,0xE8,0xA2,0x1A,0xAF,0x2C,0x71,0x35,0x2E,0xF4,0xAA,0x01,0xCF,0x52,0xFC};
+  static const char* ascii_fingerprint; // = "E7E5E9F15B0C0860554F5F73FA12DBC1";
+  static const uint8_t binary_fingerprint[16]; // = {0xE7,0xE5,0xE9,0xF1,0x5B,0x0C,0x08,0x60,0x55,0x4F,0x5F,0x73,0xFA,0x12,0xDB,0xC1};
 
 
   virtual ~EntryThriftSvr_Send_presult() throw();
