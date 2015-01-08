@@ -68,11 +68,16 @@ func (this *EntryClient) Send(main_cmd, sub_cmd int32,
 	if err != nil {
 		return err
 	}
+        i := 0
+L:
 	r, e := this.client.Send(pkg)
 	if e != nil {
                 this.st.Close()
                 this.st.Open()
-		return e
+                if i++;i>3 {
+		    return e
+                }
+                goto L
 	}
 	err = proto.Unmarshal(r.Data, resp)
 	if err != nil {
