@@ -31,9 +31,15 @@ func main() {
 	pkg := entry.NewThriftPkg()
 	ret := int32(0)
 	pkg.Ret = &ret
-	pkg.MainCmd = 1
-	pkg.SubCmd = 2
-	client.Send(pkg)
+	ret = 1
+	pkg.MainCmd = &ret
+	ret = 2
+	pkg.SubCmd = &ret
+	r, e := client.Send(pkg)
+	if e != nil {
+		fmt.Println(e.Error())
+	}
+	fmt.Printf("r.main_cmd=%d|r.data.len=%d\n", *r.MainCmd, len(r.Data))
 	fmt.Println("bbbbbbbbbb")
 
 }

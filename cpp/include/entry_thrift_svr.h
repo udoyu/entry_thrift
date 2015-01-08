@@ -39,12 +39,12 @@ public:
     {
         // Your implementation goes here
         printf("Send\n");
-         _return.__set_ret(req.ret);
-        _return.__set_main_cmd(req.main_cmd);
-        _return.__set_sub_cmd(req.sub_cmd);
     
         int ret = handler_->Exec(req, _return);
         _return.__set_ret(ret);
+        _return.__set_main_cmd(req.main_cmd);
+        _return.__set_sub_cmd(req.sub_cmd);
+        _return.__isset.data = true;
     }
 private:
     EntryThriftCmdHandler* handler_;

@@ -13,6 +13,9 @@ public:
     int Exec()
     {
         cout<<"main_cmd="<<req_.main_cmd<<endl;
+        resp_.main_cmd = 100;
+        resp_.data = string("\0 12345\05678", 12);
+        cout<<"resp.data.len="<<resp_.data.length()<<endl;
         return 0;
     }
 private:

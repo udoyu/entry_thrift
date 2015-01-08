@@ -18,8 +18,8 @@ var GoUnusedProtection__ int
 
 type ThriftPkg struct {
 	Ret     *int32 `thrift:"ret,1" json:"ret"`
-	MainCmd int32  `thrift:"main_cmd,2,required" json:"main_cmd"`
-	SubCmd  int32  `thrift:"sub_cmd,3,required" json:"sub_cmd"`
+	MainCmd *int32 `thrift:"main_cmd,2" json:"main_cmd"`
+	SubCmd  *int32 `thrift:"sub_cmd,3" json:"sub_cmd"`
 	Data    []byte `thrift:"data,4" json:"data"`
 }
 
@@ -36,12 +36,22 @@ func (p *ThriftPkg) GetRet() int32 {
 	return *p.Ret
 }
 
+var ThriftPkg_MainCmd_DEFAULT int32
+
 func (p *ThriftPkg) GetMainCmd() int32 {
-	return p.MainCmd
+	if !p.IsSetMainCmd() {
+		return ThriftPkg_MainCmd_DEFAULT
+	}
+	return *p.MainCmd
 }
 
+var ThriftPkg_SubCmd_DEFAULT int32
+
 func (p *ThriftPkg) GetSubCmd() int32 {
-	return p.SubCmd
+	if !p.IsSetSubCmd() {
+		return ThriftPkg_SubCmd_DEFAULT
+	}
+	return *p.SubCmd
 }
 
 var ThriftPkg_Data_DEFAULT []byte
@@ -51,6 +61,14 @@ func (p *ThriftPkg) GetData() []byte {
 }
 func (p *ThriftPkg) IsSetRet() bool {
 	return p.Ret != nil
+}
+
+func (p *ThriftPkg) IsSetMainCmd() bool {
+	return p.MainCmd != nil
+}
+
+func (p *ThriftPkg) IsSetSubCmd() bool {
+	return p.SubCmd != nil
 }
 
 func (p *ThriftPkg) IsSetData() bool {
@@ -114,7 +132,7 @@ func (p *ThriftPkg) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return fmt.Errorf("error reading field 2: %s", err)
 	} else {
-		p.MainCmd = v
+		p.MainCmd = &v
 	}
 	return nil
 }
@@ -123,7 +141,7 @@ func (p *ThriftPkg) ReadField3(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return fmt.Errorf("error reading field 3: %s", err)
 	} else {
-		p.SubCmd = v
+		p.SubCmd = &v
 	}
 	return nil
 }
@@ -178,27 +196,31 @@ func (p *ThriftPkg) writeField1(oprot thrift.TProtocol) (err error) {
 }
 
 func (p *ThriftPkg) writeField2(oprot thrift.TProtocol) (err error) {
-	if err := oprot.WriteFieldBegin("main_cmd", thrift.I32, 2); err != nil {
-		return fmt.Errorf("%T write field begin error 2:main_cmd: %s", p, err)
-	}
-	if err := oprot.WriteI32(int32(p.MainCmd)); err != nil {
-		return fmt.Errorf("%T.main_cmd (2) field write error: %s", p, err)
-	}
-	if err := oprot.WriteFieldEnd(); err != nil {
-		return fmt.Errorf("%T write field end error 2:main_cmd: %s", p, err)
+	if p.IsSetMainCmd() {
+		if err := oprot.WriteFieldBegin("main_cmd", thrift.I32, 2); err != nil {
+			return fmt.Errorf("%T write field begin error 2:main_cmd: %s", p, err)
+		}
+		if err := oprot.WriteI32(int32(*p.MainCmd)); err != nil {
+			return fmt.Errorf("%T.main_cmd (2) field write error: %s", p, err)
+		}
+		if err := oprot.WriteFieldEnd(); err != nil {
+			return fmt.Errorf("%T write field end error 2:main_cmd: %s", p, err)
+		}
 	}
 	return err
 }
 
 func (p *ThriftPkg) writeField3(oprot thrift.TProtocol) (err error) {
-	if err := oprot.WriteFieldBegin("sub_cmd", thrift.I32, 3); err != nil {
-		return fmt.Errorf("%T write field begin error 3:sub_cmd: %s", p, err)
-	}
-	if err := oprot.WriteI32(int32(p.SubCmd)); err != nil {
-		return fmt.Errorf("%T.sub_cmd (3) field write error: %s", p, err)
-	}
-	if err := oprot.WriteFieldEnd(); err != nil {
-		return fmt.Errorf("%T write field end error 3:sub_cmd: %s", p, err)
+	if p.IsSetSubCmd() {
+		if err := oprot.WriteFieldBegin("sub_cmd", thrift.I32, 3); err != nil {
+			return fmt.Errorf("%T write field begin error 3:sub_cmd: %s", p, err)
+		}
+		if err := oprot.WriteI32(int32(*p.SubCmd)); err != nil {
+			return fmt.Errorf("%T.sub_cmd (3) field write error: %s", p, err)
+		}
+		if err := oprot.WriteFieldEnd(); err != nil {
+			return fmt.Errorf("%T write field end error 3:sub_cmd: %s", p, err)
+		}
 	}
 	return err
 }

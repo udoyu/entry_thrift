@@ -1,6 +1,7 @@
 package entry
 
 import (
+        "fmt"
 	"code.google.com/p/goprotobuf/proto"
 	. "github.com/xiying/entry_thrift/go/entry/gen-go/entry"
 	"github.com/xiying/xytool/beego/controller"
@@ -61,8 +62,8 @@ func (this *EntryClient) Send(main_cmd, sub_cmd int32,
 	pkg := NewThriftPkg()
 	ret := int32(0)
 	pkg.Ret = &ret
-	pkg.MainCmd = main_cmd
-	pkg.SubCmd = sub_cmd
+	pkg.MainCmd = &main_cmd
+	pkg.SubCmd = &sub_cmd
 
 	pkg.Data, err = proto.Marshal(req)
 	if err != nil {
@@ -79,8 +80,10 @@ L:
                 }
                 goto L
 	}
+        fmt.Println("datalen=", len(r.Data))
 	err = proto.Unmarshal(r.Data, resp)
 	if err != nil {
+                fmt.Printf("resp=%v\n", resp)
 		return err
 	}
 	return nil
