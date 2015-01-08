@@ -74,10 +74,14 @@ L:
 	if e != nil {
                 this.st.Close()
                 this.st.Open()
+<<<<<<< HEAD
                 if i++;i>3 {
 		    return e
                 }
                 goto L
+=======
+		return e
+>>>>>>> b5cced89b9548547fb8683c95cfaf5fc857527bf
 	}
 	err = proto.Unmarshal(r.BufData, resp)
 	if err != nil {
