@@ -24,7 +24,12 @@ public:
 class EntryThriftSvrManager
 {
 public:
-    void Start(int port, EntryThriftCmdHandler* h);
+    EntryThriftSvrManager(int port, EntryThriftCmdHandler* h)
+    : port_(port), cmd_handler_(h){}
+    void Start();
+private:
+    int port_;
+    EntryThriftCmdHandler* cmd_handler_;
 };
 
 class EntryThriftSvrHandler : virtual public EntryThriftSvrIf 
@@ -38,8 +43,6 @@ public:
     void Send(ThriftPkg& _return, const ThriftPkg& req) 
     {
         // Your implementation goes here
-        printf("Send\n");
-    
         int ret = handler_->Exec(req, _return);
         _return.__set_ret(ret);
         _return.__set_main_cmd(req.main_cmd);
@@ -50,11 +53,11 @@ private:
 
 };
 
-inline void EntryThriftSvrManager::Start(int port, EntryThriftCmdHandler* h)
+inline void EntryThriftSvrManager::Start()
 {
-    boost::shared_ptr<EntryThriftSvrHandler> handler(new EntryThriftSvrHandler(h));
+    boost::shared_ptr<EntryThriftSvrHandler> handler(new EntryThriftSvrHandler(cmd_handler_));
     boost::shared_ptr<TProcessor> processor(new EntryThriftSvrProcessor(handler));
-    boost::shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
+    boost::shared_ptr<TServerTransport> serverTransport(new TServerSocket(port_));
     boost::shared_ptr<TTransportFactory> transportFactory(new TFramedTransportFactory());
     boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
 
