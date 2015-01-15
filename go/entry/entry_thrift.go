@@ -26,11 +26,11 @@ type EntryClient struct {
 	//	handlers map[string]func(*controller.Controller)
 }
 
-func (this *) Open() error {
+func (this *EntryClient) Open() error {
     return this.st.Open()
 }
 
-func (this *) Close() {
+func (this *EntryClient) Close() {
     this.st.Close()
 }
 
