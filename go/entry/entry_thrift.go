@@ -26,8 +26,12 @@ type EntryClient struct {
 	//	handlers map[string]func(*controller.Controller)
 }
 
-func (this *EntryClient) St() *thriftst.ThriftSt{
-    return this.st
+func (this *) Open() error {
+    return this.st.Open()
+}
+
+func (this *) Close() {
+    this.st.Close()
 }
 
 func (this *EntryClient) Init(st *thriftst.ThriftSt) {
