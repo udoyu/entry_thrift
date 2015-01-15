@@ -26,6 +26,10 @@ type EntryClient struct {
 	//	handlers map[string]func(*controller.Controller)
 }
 
+func (this *EntryClient) St() *thriftst.ThriftSt{
+    return this.st
+}
+
 func (this *EntryClient) Init(st *thriftst.ThriftSt) {
 	client := NewEntryThriftSvrClientFactory(st.TTransport(),
 		st.TProtocolFactory())
