@@ -1,6 +1,7 @@
 package entry
 
 import (
+        "fmt"
 	"code.google.com/p/goprotobuf/proto"
 	. "github.com/xiying/entry_thrift/go/entry/gen-go/entry"
 	"github.com/xiying/xytool/beego/controller"
@@ -44,6 +45,7 @@ func (this *EntryClient) Init(st *thriftst.ThriftSt) {
 }
 
 func (this *EntryClient) Handler(ctl *controller.Controller) bool {
+        fmt.Println("path=" + ctl.Path())
 	f, ok := this.handlers[ctl.Path()]
 	if ok {
 		f(ctl)
