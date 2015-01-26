@@ -3,21 +3,10 @@ package entry
 import (
         "fmt"
 	"code.google.com/p/goprotobuf/proto"
-	. "github.com/xiying/entry_thrift/go/entry/gen-go/entry"
-	"github.com/xiying/xytool/beego/controller"
-	"github.com/xiying/xytool/thrift/thriftst"
-	"strconv"
+	. "github.com/udoyu/entry_thrift/go/entry/gen-go/entry"
+	"github.com/udoyu/utils/beego/controller"
+	"github.com/udoyu/utils/thrift/thriftst"
 )
-
-func Atol(s string) int64 {
-	i, _ := strconv.ParseInt(s, 10, 64)
-	return i
-}
-
-func Atoi(s string) int {
-	i, _ := strconv.Atoi(s)
-	return i
-}
 
 type EntryClient struct {
         st *thriftst.ThriftSt
