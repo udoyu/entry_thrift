@@ -5,12 +5,21 @@
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
+
+#include <concurrency/ThreadManager.h>
+#include <concurrency/PosixThreadFactory.h>
+
+#include <server/TThreadPoolServer.h>
+#include <server/TThreadedServer.h>
+
 #include "EntryThriftSvr.h"
 
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;
 using namespace ::apache::thrift::server;
+
+using namespace ::apache::thrift::concurrency;
 
 namespace entry {
 
@@ -26,7 +35,7 @@ class EntryThriftSvrManager
 public:
     EntryThriftSvrManager(int port, EntryThriftCmdHandler* h)
     : port_(port), cmd_handler_(h){}
-    void Start();
+    void Start(int thread_cnt = 8);
 private:
     int port_;
     EntryThriftCmdHandler* cmd_handler_;
@@ -53,7 +62,7 @@ private:
 
 };
 
-inline void EntryThriftSvrManager::Start()
+inline void EntryThriftSvrManager::Start(int thread_cnt)
 {
     boost::shared_ptr<EntryThriftSvrHandler> handler(new EntryThriftSvrHandler(cmd_handler_));
     boost::shared_ptr<TProcessor> processor(new EntryThriftSvrProcessor(handler));
@@ -61,7 +70,20 @@ inline void EntryThriftSvrManager::Start()
     boost::shared_ptr<TTransportFactory> transportFactory(new TFramedTransportFactory());
     boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
 
-    TSimpleServer* server = new TSimpleServer(processor, serverTransport, transportFactory, protocolFactory);
+    boost::shared_ptr<ThreadManager> threadManager = ThreadManager::newSimpleThreadManager(8);
+    boost::shared_ptr<PosixThreadFactory> threadFactory 
+      = shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+
+    threadManager->threadFactory(threadFactory);
+    threadManager->start();
+  
+    TThreadPoolServer server(processor,
+                           serverTransport,
+                           transportFactory,
+                           protocolFactory,
+                           threadManager);
+
+//    TSimpleServer* server = new TSimpleServer(processor, serverTransport, transportFactory, protocolFactory);
     server->serve();
 }
 
