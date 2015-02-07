@@ -6,11 +6,11 @@
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
 
-#include <concurrency/ThreadManager.h>
-#include <concurrency/PosixThreadFactory.h>
+#include <thrift/concurrency/ThreadManager.h>
+#include <thrift/concurrency/PosixThreadFactory.h>
 
-#include <server/TThreadPoolServer.h>
-#include <server/TThreadedServer.h>
+#include <thrift/server/TThreadPoolServer.h>
+#include <thrift/server/TThreadedServer.h>
 
 #include "EntryThriftSvr.h"
 
@@ -72,7 +72,7 @@ inline void EntryThriftSvrManager::Start(int thread_cnt)
 
     boost::shared_ptr<ThreadManager> threadManager = ThreadManager::newSimpleThreadManager(8);
     boost::shared_ptr<PosixThreadFactory> threadFactory 
-      = shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+      = boost::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
 
     threadManager->threadFactory(threadFactory);
     threadManager->start();
@@ -83,8 +83,8 @@ inline void EntryThriftSvrManager::Start(int thread_cnt)
                            protocolFactory,
                            threadManager);
 
-//    TSimpleServer* server = new TSimpleServer(processor, serverTransport, transportFactory, protocolFactory);
-    server->serve();
+//  TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
+    server.serve();
 }
 
 }
