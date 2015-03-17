@@ -18,7 +18,12 @@ func (this *EntryClient) Copy() *EntryClient {
 }
 
 func (this *EntryClient) Reset() error {
-	return this.st.Reset()
+	err := this.st.Reset()
+	if err != nil {
+		return err
+	}
+	this.Init(this.st)
+	return nil
 }
 
 func (this *EntryClient) Open() error {
