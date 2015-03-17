@@ -18,10 +18,8 @@ func (this *EntryClient) Copy() *EntryClient {
 }
 
 func (this *EntryClient) Reset() error {
-	err := this.st.Reset()
-	if err != nil {
-		return err
-	}
+	this.Close()
+	this.Open()
 	this.Init(this.st)
 	return nil
 }
@@ -58,7 +56,10 @@ func (this *EntryClient) Send(main_cmd, sub_cmd int32,
 L:
 	r, e := this.client.Send(pkg)
 	if e != nil {
-		this.Reset()
+		e1 := this.Reset()
+		if e1 != nil {
+			println("err=", e1.Error())
+		}
 		if i++; i > 3 {
 			return e
 		}
@@ -66,8 +67,5 @@ L:
 		return e
 	}
 	err = proto.Unmarshal(r.BufData, resp)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
