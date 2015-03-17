@@ -34,8 +34,8 @@ public:
 
 int main()
 {
-    EntryThriftSvrManager manager;
     TestThriftCmdHandler h;
-    manager.Start(9001, &h);
+    EntryThriftSvrManager manager(9001, &h);
+    manager.Start();
     return 0;
 }

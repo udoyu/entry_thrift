@@ -7,29 +7,35 @@ import (
 )
 
 type EntryClient struct {
-        st *thriftst.ThriftSt
-	client   *EntryThriftSvrClient
+	st     *thriftst.ThriftSt
+	client *EntryThriftSvrClient
 }
 
 func (this *EntryClient) Copy() *EntryClient {
-    c := &EntryClient{}
-    c.Init(this.st)
-    return c
+	c := &EntryClient{}
+	c.Init(this.st)
+	return c
+}
+
+func (this *EntryClient) Reset() error {
+	return this.st.Reset()
 }
 
 func (this *EntryClient) Open() error {
-    return this.st.Open()
+	return this.st.Open()
 }
 
 func (this *EntryClient) Close() {
-    this.st.Close()
+	this.st.Close()
 }
 
 func (this *EntryClient) Init(st *thriftst.ThriftSt) {
-	client := NewEntryThriftSvrClientFactory(st.TTransport(),
-		st.TProtocolFactory())
-        this.st = st
-	this.client = client
+	if st != nil {
+		client := NewEntryThriftSvrClientFactory(st.TTransport(),
+			st.TProtocolFactory())
+		this.st = st
+		this.client = client
+	}
 }
 
 func (this *EntryClient) Send(main_cmd, sub_cmd int32,
@@ -43,16 +49,15 @@ func (this *EntryClient) Send(main_cmd, sub_cmd int32,
 	if err != nil {
 		return err
 	}
-        i := 0
+	i := 0
 L:
 	r, e := this.client.Send(pkg)
 	if e != nil {
-                this.st.Close()
-                this.st.Open()
-                if i++;i>3 {
-		    return e
-                }
-                goto L
+		this.Reset()
+		if i++; i > 3 {
+			return e
+		}
+		goto L
 		return e
 	}
 	err = proto.Unmarshal(r.BufData, resp)
