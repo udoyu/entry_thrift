@@ -11,7 +11,7 @@ LIBS = -L${LIB_DIR} -lthrift
 
 CPP = g++
 CFLAGS       = -fPIC -Wall
-CPPFLAGS       = -g -O0 -Wall -std=c++11 $(INC_PATH) -D Debug -DDEBUG
+CPPFLAGS       = -g -O0 -Wall -std=c++11 $(INC_PATH) -D Debug -DDEBUG -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H 
 DEBUGFLAGS   = -g -O0 -D_DEBUG -DDEBUG -D DEBUG
 RELEASEFLAGS = -O2 -DNDEBUG
 LDFLAGS      =  
