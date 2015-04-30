@@ -1,30 +1,31 @@
 THRIFT_DIR = /usr/local/thrift/include
 LIB_DIR = /usr/local/thrift/lib
 GEN_DIR = ../gen-cpp
-
+TARGET_PATH = ../..
 VPATH = $(GEN_DIR)
 
 INC_PATH = -I${THRIFT_DIR} -I$(GEN_DIR) -I../include
-GEN_SRC = 
+GEN_SRC = entry_thrift_types.cpp entry_thrift_constants.cpp EntryThriftSvr.cpp
 ADD_SRC = $(GEN_SRC)
-LIBS = -L${LIB_DIR} -lthrift 
 
 CPP = g++
 CFLAGS       = -fPIC -Wall
-CPPFLAGS       = -g -O0 -Wall -std=c++11 $(INC_PATH) -D Debug -DDEBUG -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H 
+CPPFLAGS       = -g -O3 -Wall -std=c++11 $(INC_PATH) -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H 
 DEBUGFLAGS   = -g -O0 -D_DEBUG -DDEBUG -D DEBUG
 RELEASEFLAGS = -O2 -DNDEBUG
-LDFLAGS      = -L../include -lsimentry_thrift
+LDFLAGS      =  
 
-TARGET  = server 
-SOURCES = $(shell echo *.cpp $(ADD_SRC))
-HEADERS = $(shell echo *.h)
-OBJECTS = $(SOURCES:.cpp=.o)
-
+SOURCES=$(shell echo $(ADD_SRC))
+HEADERS=$(shell echo *.h)
+OBJECTS=$(SOURCES:.cpp=.o)
+TARGET=libsimentry_thrift.a
 all: $(TARGET)
-
-$(TARGET): $(OBJECTS)
-	$(CPP) $(FLAGS) $(CPPFLAGS) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(LIBS)
+$(TARGET) : $(OBJECTS)
+	$(AR) -rc $(TARGET) $(OBJECTS)
+	mkdir -p $(TARGET_PATH)/lib
+	cp $(TARGET) $(TARGET_PATH)/lib
+	mkdir -p $(TARGET_PATH)/include
+	cp *.h $(TARGET_PATH)/include
 
 clean:
 	rm -f *.o $(TARGET) $(PROTO_PATH)/*.o
