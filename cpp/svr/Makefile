@@ -1,21 +1,19 @@
 THRIFT_DIR = /usr/local/thrift/include
 LIB_DIR = /usr/local/thrift/lib
-GEN_DIR = ../gen-cpp
-
+TOP_DIR = ../..
 VPATH = $(GEN_DIR)
 
-INC_PATH = -I${THRIFT_DIR} -I$(GEN_DIR) -I../include
+INC_PATH = -I${THRIFT_DIR} -I$(TOP_DIR)/build/entry_thrift
 GEN_SRC = 
-ADD_SRC = $(GEN_SRC)
-LIBS = -L${LIB_DIR} -lthrift 
+LIBS = -L${LIB_DIR} -lthrift -L$(TOP_DIR)/build/lib -lsimentry_thrift
+
 
 CPP = g++
 CFLAGS       = -fPIC -Wall
 CPPFLAGS       = -g -O0 -Wall -std=c++11 $(INC_PATH) -D Debug -DDEBUG -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H 
 DEBUGFLAGS   = -g -O0 -D_DEBUG -DDEBUG -D DEBUG
 RELEASEFLAGS = -O2 -DNDEBUG
-LDFLAGS      = -L../include -lsimentry_thrift
-
+LDFLAGS      =  
 TARGET  = server 
 SOURCES = $(shell echo *.cpp $(ADD_SRC))
 HEADERS = $(shell echo *.h)
