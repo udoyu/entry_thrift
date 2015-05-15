@@ -18,7 +18,7 @@ using namespace entry;
 class EntryThriftHandler : virtual public EntryThriftIf 
 {
 public:
-    EntryThriftHandler(ThrfitCmdHandler* h) 
+    EntryThriftHandler(EntryThrfitCmdHandler* h) 
     {
         handler_ = h;
     }
@@ -32,7 +32,7 @@ public:
         _return.__set_sub_cmd(req.sub_cmd);
     }
 private:
-    ThrfitCmdHandler* handler_;
+    EntryThrfitCmdHandler* handler_;
 
 };
 
