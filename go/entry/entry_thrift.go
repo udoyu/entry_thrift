@@ -8,7 +8,7 @@ import (
 
 type EntryClient struct {
 	st     *thriftst.ThriftSt
-	client *EntryThriftSvrClient
+	client *EntryThriftClient
 }
 
 func (this *EntryClient) Copy() *EntryClient {
@@ -34,7 +34,7 @@ func (this *EntryClient) Close() {
 
 func (this *EntryClient) Init(st *thriftst.ThriftSt) {
 	if st != nil {
-		client := NewEntryThriftSvrClientFactory(st.TTransport(),
+		client := NewEntryThriftClientFactory(st.TTransport(),
 			st.TProtocolFactory())
 		this.st = st
 		this.client = client
