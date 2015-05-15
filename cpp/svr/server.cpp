@@ -23,7 +23,7 @@ private:
     const entry::ThriftPkg& req_;
     entry::ThriftPkg& resp_;
 };
-class TestThriftCmdHandler : public ThrfitCmdHandler
+class TestThriftCmdHandler : public EntryThriftCmdHandler
 {
 public:
     int Exec(const entry::ThriftPkg& req, entry::ThriftPkg& resp)
