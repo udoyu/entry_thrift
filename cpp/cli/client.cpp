@@ -21,7 +21,7 @@ int main()
         {
             if (obj) 
             {
-                obj->Send(resp, req);
+                obj->trySend(resp, req);
                 cout<<resp.buf_data<<endl;
             }
             else
@@ -36,7 +36,7 @@ int main()
         catch(...)
         {
         }
-        sleep(1);
+        sleep(10);
     }
     return 0;
 }

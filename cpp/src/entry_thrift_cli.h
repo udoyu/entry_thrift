@@ -13,12 +13,26 @@
 namespace entry {
 
 typedef boost::shared_ptr<EntryThriftClient> EntryThriftClientPtr;
-struct EntryThriftClientObj
+class EntryThriftClientObj
 {
-    boost::shared_ptr<::apache::thrift::transport::TTransport> transport;
-    EntryThriftClientPtr client;
+public:
     EntryThriftClientObj(const std::string& ip, uint16_t port);    
     ~EntryThriftClientObj();
+
+    void Send(ThriftPkg& _return, const ThriftPkg& req);
+    void send_Send(const ThriftPkg& req);
+    void recv_Send(ThriftPkg& _return);
+
+    void trySend(ThriftPkg& _return, const ThriftPkg& req);
+    void trySend_Send(const ThriftPkg& req);
+    void tryRecv_Send(ThriftPkg& _return);
+private:
+    void reset();
+    void init();
+    std::string ip_;
+    uint16_t port_;
+    boost::shared_ptr<::apache::thrift::transport::TTransport> transport_;
+    EntryThriftClientPtr client_;
 };
 typedef boost::shared_ptr<EntryThriftClientObj> EntryThriftClientObjPtr;
 
@@ -44,9 +58,9 @@ public:
         callback_ = Callback();
         if (destroyCallback_) destroyCallback_();
     }
-    const EntryThriftClientPtr& operator-> () const
+    const EntryThriftClientObjPtr& operator-> () const
     {
-        return obj_->client;
+        return obj_;
     }
     operator const bool () const
     {

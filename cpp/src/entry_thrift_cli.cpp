@@ -8,19 +8,73 @@ using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;
 
-EntryThriftClientObj::EntryThriftClientObj(const std::string& ip, uint16_t port)
+EntryThriftClientObj::EntryThriftClientObj(const std::string& ip, uint16_t port):
+    ip_(ip), 
+    port_(port)
 {
-    boost::shared_ptr<TTransport> socket(new TSocket(ip, port));
-    //transport.reset(new TBufferedTransport(socket));
-    transport.reset(new TFramedTransport(socket));
-    boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-    transport->open();
-    client.reset(new EntryThriftClient(protocol));
+    init();
 }
 
 EntryThriftClientObj::~EntryThriftClientObj()
 {
-    transport->close();
+    transport_->close();
+}
+
+void EntryThriftClientObj::Send(ThriftPkg& _return, const ThriftPkg& req)
+{
+    return client_->Send(_return, req);
+}
+void EntryThriftClientObj::send_Send(const ThriftPkg& req)
+{
+    return client_->send_Send(req);
+}
+void EntryThriftClientObj::recv_Send(ThriftPkg& _return)
+{
+    return client_->recv_Send(_return);
+}
+
+void EntryThriftClientObj::trySend(ThriftPkg& _return, const ThriftPkg& req)
+{
+    try
+    {
+        client_->Send(_return, req);
+    }
+    catch (...)
+    {
+        reset();
+        client_->Send(_return, req);
+    }
+}
+void EntryThriftClientObj::trySend_Send(const ThriftPkg& req)
+{
+    try
+    {
+        client_->send_Send(req);
+    }
+    catch (...)
+    {
+        reset();
+        client_->send_Send(req);
+    }
+}
+void EntryThriftClientObj::tryRecv_Send(ThriftPkg& _return)
+{
+    client_->recv_Send(_return);
+}
+
+void EntryThriftClientObj::reset()
+{
+    transport_->close();
+    init();
+}
+
+void EntryThriftClientObj::init()
+{
+    boost::shared_ptr<TTransport> socket(new TSocket(ip_, port_));
+    transport_.reset(new TFramedTransport(socket));
+    boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport_));
+    transport_->open();
+    client_.reset(new EntryThriftClient(protocol));
 }
 
 EntryThriftCli::EntryThriftCli(const std::string& ip, uint16_t port) :
@@ -45,7 +99,7 @@ void EntryThriftCli::recover(const EntryThriftClientObjPtr& c)
     if (isValid())
     {
         boost::unique_lock<boost::mutex> lock(mutex_);
-        clientPool_.push_back(c);
+        clientPool_.push_front(c);
     }
 }
 
