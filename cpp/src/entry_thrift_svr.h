@@ -5,7 +5,7 @@
 
 namespace entry {
 
-class EntryThrfitCmdHandler
+class EntryThriftCmdHandler
 {
 public:
     virtual int Exec(const entry::ThriftPkg& req,
@@ -15,12 +15,12 @@ public:
 class EntryThriftManager
 {
 public:
-    EntryThriftManager(int port, EntryThrfitCmdHandler* h)
+    EntryThriftManager(int port, EntryThriftCmdHandler* h)
     : port_(port), cmd_handler_(h){}
     void Start(int thread_cnt = 8);
 private:
     int port_;
-    EntryThrfitCmdHandler* cmd_handler_;
+    EntryThriftCmdHandler* cmd_handler_;
 };
 
 }
