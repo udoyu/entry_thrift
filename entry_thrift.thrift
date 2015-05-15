@@ -9,7 +9,7 @@ struct ThriftPkg{
  5: string str_data
 }
 
-service EntryThriftSvr {
+service EntryThrift {
   ThriftPkg Send(1: ThriftPkg req);
 }
 

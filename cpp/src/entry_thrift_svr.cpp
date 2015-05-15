@@ -15,10 +15,10 @@ using namespace ::apache::thrift::server;
 using namespace ::apache::thrift::concurrency;
 using namespace entry;
 
-class EntryThriftSvrHandler : virtual public EntryThriftSvrIf 
+class EntryThriftHandler : virtual public EntryThriftIf 
 {
 public:
-    EntryThriftSvrHandler(EntryThriftCmdHandler* h) 
+    EntryThriftHandler(ThrfitCmdHandler* h) 
     {
         handler_ = h;
     }
@@ -32,14 +32,14 @@ public:
         _return.__set_sub_cmd(req.sub_cmd);
     }
 private:
-    EntryThriftCmdHandler* handler_;
+    ThrfitCmdHandler* handler_;
 
 };
 
-void EntryThriftSvrManager::Start(int thread_cnt)
+void entry::EntryThriftManager::Start(int thread_cnt)
 {
-    boost::shared_ptr<EntryThriftSvrHandler> handler(new EntryThriftSvrHandler(cmd_handler_));
-    boost::shared_ptr<TProcessor> processor(new EntryThriftSvrProcessor(handler));
+    boost::shared_ptr<EntryThriftHandler> handler(new EntryThriftHandler(cmd_handler_));
+    boost::shared_ptr<TProcessor> processor(new EntryThriftProcessor(handler));
     boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());  
     boost::shared_ptr<ThreadManager> threadManager = ThreadManager::newSimpleThreadManager(thread_cnt);  
     boost::shared_ptr<PosixThreadFactory> threadFactory = boost::shared_ptr<PosixThreadFactory > (new PosixThreadFactory());  

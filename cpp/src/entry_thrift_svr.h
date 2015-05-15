@@ -1,28 +1,27 @@
-#ifndef ENTRY_THRIFT_SVR_H
-#define ENTRY_THRIFT_SVR_H
+#ifndef THRIFT_INTERFACE_SVR_H
+#define THRIFT_INTERFACE_SVR_H
 
-#include "EntryThriftSvr.h"
+#include "EntryThrift.h"
 
 namespace entry {
 
-class EntryThriftCmdHandler
+class ThrfitCmdHandler
 {
 public:
     virtual int Exec(const entry::ThriftPkg& req,
                      entry::ThriftPkg& resp) = 0;
 };
 
-class EntryThriftSvrManager
+class EntryThriftManager
 {
 public:
-    EntryThriftSvrManager(int port, EntryThriftCmdHandler* h)
+    EntryThriftManager(int port, ThrfitCmdHandler* h)
     : port_(port), cmd_handler_(h){}
     void Start(int thread_cnt = 8);
 private:
     int port_;
-    EntryThriftCmdHandler* cmd_handler_;
+    ThrfitCmdHandler* cmd_handler_;
 };
-
 
 }
 

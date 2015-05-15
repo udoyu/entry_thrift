@@ -1,7 +1,9 @@
 TOP_PATH=../..
-THRIFT_PATH = /usr/local/thrift/include
+THRIFT_PATH = /usr/local/include
 LIB_PATH = /usr/local/thrift/lib
-TARGET_PATH = ../..
+TARGET_PATH = $(TOP_PATH)/build
+TARGET_INC_PATH = $(TARGET_PATH)/entry_thrift
+TARGET_LIB_PATH = $(TARGET_PATH)/lib
 GEN_PATH = ./gen-cpp
 VPATH = $(GEN_PATH)
 
@@ -26,11 +28,11 @@ target:
 all: $(TARGET)
 $(TARGET) : $(OBJECTS)
 	$(AR) -rc $(TARGET) $(OBJECTS)
-	mkdir -p $(TARGET_PATH)/lib
-	cp $(TARGET) $(TARGET_PATH)/lib
-	mkdir -p $(TARGET_PATH)/include
-	cp *.h $(TARGET_PATH)/include
-	cp $(GEN_PATH)/*.h $(TARGET_PATH)/include
+	mkdir -p $(TARGET_LIB_PATH)
+	cp $(TARGET) $(TARGET_LIB_PATH)
+	mkdir -p $(TARGET_INC_PATH)
+	cp *.h $(TARGET_INC_PATH)
+	cp $(GEN_PATH)/*.h $(TARGET_INC_PATH)
 
 clean:
 	rm -rf *.o $(TARGET) $(PROTO_PATH)/*.o gen-cpp

@@ -14,7 +14,7 @@ CPPFLAGS       = -g -O0 -Wall -std=c++11 $(INC_PATH) -D Debug -DDEBUG -DHAVE_INT
 DEBUGFLAGS   = -g -O0 -D_DEBUG -DDEBUG -D DEBUG
 RELEASEFLAGS = -O2 -DNDEBUG
 LDFLAGS      =  
-TARGET  = server 
+TARGET  = client
 SOURCES = $(shell echo *.cpp $(ADD_SRC))
 HEADERS = $(shell echo *.h)
 OBJECTS = $(SOURCES:.cpp=.o)
